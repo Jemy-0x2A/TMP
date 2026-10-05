@@ -48,8 +48,8 @@ def get_result(n1: float, operator: str, n2: float) -> float:
 
 
 def calculator() -> None:
-    valids_digits = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'}
-    valids_operators = {'+', '-', '*', '/'}
+    valids_digits = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"}
+    valids_operators = {"+", "-", "*", "/"}
 
     print("First number:")
     n1: float = float(get_input("number", valids_digits))
