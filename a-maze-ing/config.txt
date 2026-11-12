@@ -1,0 +1,4 @@
+dimensions
+mode de generation parfait/imparfait
+coordonnees d'entree et de sortie du labyrinthe
+nom du fichier de sauvegarde sortie
