@@ -1,0 +1,58 @@
+amazing
+
+22222222222222
+2000+++0000++2
+2++++0+++++0+2
+2+000+0000+0+2
+2+0++++++++++2
+22222222222222
+
+Taille(int)
+Creation de la grille:
+	grille[0...]
+	chaque rangee:
+		chaque colonne:
+			grille[rangee][colonne] = 2
+
+case_suivante_est_valide()
+	#tout simplement si elle a deja ete visite
+creuser_les_murs()
+	#principes des bits et manip dictionnaire(direction, coord, mur, mur-opposite)
+	#+declaration decimal des murs
+
+-Stocker '(0, 0)' dans -> CHEMIN_PARCOURU[] #DEPART
+-Initialiser 'None' a -> 'DIRECTION_ACTUELLE
+-Stocker '(Nord, Sud, Est, Ouest)' dans -> TOUTES_LES_DIRECTIONS
+
+#CREUSAGE
+	Tant qu'il reste du CHEMIN_PARCOURU[]:
+		-affecter [] a -> DIRECTIONS_VALIDES[]
+		-affecter le dernier element du CHEMIN_PARCOURU[] a -> COORDONNEES_ACTUELLES
+
+		-Si il n'y a pas de DIRECTION_ACTUELLE:
+		|	
+		|	-Pour chaque "direction" de TOUTES_LES_DIRECTIONS:
+		|		-Si la //case_suivante_est_valide( COORDOONEES_ACTUELLES, "direction" )\\:
+		|			-stocker la "direction" dans -> DIRECTIONS_VALIDES[]
+		|	
+		|	-Si il y a des DIRECTIONS_VALIDES[]:
+		|	|	
+		|	|	-reaffecter une direction aleatoirement a -> DIRECTION_ACTUELLE
+		|	|
+		|	-Sinon, il n'y a pas de DIRECTION_VALIDES[]:
+		|		-retirer le dernier element du CHEMIN_PARCOURU[]
+		|		-recommencer la boucle!!
+		|
+		-Sinon, il y a une DIRECTION_ACTUELLE:
+			Si la //case_suivante_est_valide( COORDOONNEES_ACTUELLE, DIRECTION_ACTUELLE )\\:
+			|	-20% chance:
+			|		-reaffecter NONE a -> DIRECTION_ACTUELLE
+			Sinon la case suivante n'est pas valide:
+				-reaffecter NONE a -> DIRECTION_ACTUELLE
+				-recommencer la boucle!!
+		
+		-//creuser_les_murs(COORDOONNEES_ACTUELLES, DIRECTION_ACTUELLE)\\
+		-reaffecter (DIRECTION_ACTUELLE + COORDOONNEES_ACTUELLES) a -> COORDOONEES_ACTUELLE 
+		-stocker les COORDOONNEES_ACTUELLES dans -> CHEMIN_PARCOURU[]
+		
+		#peut etre simplifier et solidifier les affecation reaffectation avec variable conditionnelles a part
