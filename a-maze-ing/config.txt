@@ -1,4 +1,9 @@
-dimensions
-mode de generation parfait/imparfait
-coordonnees d'entree et de sortie du labyrinthe
-nom du fichier de sauvegarde sortie
+WIDHT=20
+HEIGHT=15
+
+ENTRY=0,0
+EXIT=19,14
+
+PERFECT=True
+
+OUTPUT_FILE=maze.txt

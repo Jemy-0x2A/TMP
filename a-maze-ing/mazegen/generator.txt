@@ -30,15 +30,17 @@ DIRECTIONS = {
 
 -HEXADECIMAL
 
+#verification des parametres, seed?
+
 =================================== #Fonction 1
 
-case_suivante_est_valide(COORDONNEES, DIRECTION) -> TRUE/FALSE
+coords_suivantes_sont_valides(COORDONNEES, DIRECTION) -> TRUE/FALSE
 	-recuperer les coordonnees directionnelles dans DIRECTIONS{DIRECTION}
 	-affecter (COORDONNEES + la direction) a -> COORDONNEES_SUIVANTE
 	
 	-Si les COORDONNEES_SUIVANTES ne sortent pas de la grille
-	|	ET qu'elle ne fait pas partie des coordonnees42
-	|	ET la valeur a cette position est ALL_WALLS:
+	.	ET qu'elle ne font pas partie des coordonnees42
+	.	ET la valeur a cette position est ALL_WALLS:
 	|		-Return TRUE
 	|
 	-Sinon:
@@ -67,7 +69,7 @@ creuser_les_murs(COORDONNEES, DIRECTION) -> COORDONEES_SUIVANTES
 		-Si il n'y a pas de DIRECTION_ACTUELLE:
 		|	
 		|	-Pour chaque "direction" de TOUTES_LES_DIRECTIONS:
-		|		-Si la //case_suivante_est_valide( COORDOONEES_ACTUELLES, "direction" )\\:
+		|		-Si les //coords_suivantes_sont_valides( COORDOONEES_ACTUELLES, "direction" )\\:
 		|			-stocker la "direction" dans -> DIRECTIONS_VALIDES[]
 		|	
 		|	-Si il y a des DIRECTIONS_VALIDES[]:
@@ -79,12 +81,12 @@ creuser_les_murs(COORDONNEES, DIRECTION) -> COORDONEES_SUIVANTES
 		|		-recommencer la boucle!!
 		|
 		-Sinon, il y a une DIRECTION_ACTUELLE:
-			Si la //case_suivante_est_valide( COORDOONNEES_ACTUELLE, DIRECTION_ACTUELLE )\\:
-			|	-20% chance:
-			|		-reaffecter NONE a -> DIRECTION_ACTUELLE
-			Sinon la case suivante n'est pas valide:
+			Si les //coords_suivantes_sont_valides( COORDOONNEES_ACTUELLE, DIRECTION_ACTUELLE )\\ = False:
 				-reaffecter NONE a -> DIRECTION_ACTUELLE
 				-recommencer la boucle!!
 		 
 		-//creuser_les_murs(COORDOONNEES_ACTUELLES, DIRECTION_ACTUELLE)\\ et affecter a -> COORDONEES_SUIVANTES
 		-stocker les COORDONNEES_SUIVANTES dans -> CHEMIN_PARCOURU[]
+
+		-20% chance:
+			-reaffecter NONE a -> DIRECTION_ACTUELLE
