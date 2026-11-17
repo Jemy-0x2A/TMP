@@ -8,7 +8,7 @@
 22222222222222
 	
 			
-===================================
+=================================== #Valeurs
 NORTH, EAST, SOUTH, WEST = 1, 2, 4, 8
 ALL_WALLS = 15
 
@@ -25,7 +25,7 @@ DIRECTIONS = {
 
 -Initialise ALL_WALLS pour chaque colonne de chaque ligne dans -> GRILLE[]
 
-===================================
+=================================== #Fonction 1
 
 case_suivante_est_valide(COORDONNEES, DIRECTION) -> TRUE/FALSE
 	-recuperer les coordonnees directionnelles dans DIRECTIONS{DIRECTION}
@@ -39,7 +39,7 @@ case_suivante_est_valide(COORDONNEES, DIRECTION) -> TRUE/FALSE
 	-Sinon:
 		-Return FALSE
 
-===================================
+=================================== #Fonction 2
 	
 creuser_les_murs(COORDONNEES, DIRECTION) -> COORDONEES_SUIVANTES
 	-recuperer les coordonnees directionnelles et les deux murs voisins dans DIRECTIONS{DIRECTION}
@@ -48,7 +48,7 @@ creuser_les_murs(COORDONNEES, DIRECTION) -> COORDONEES_SUIVANTES
 	-ouvrir le mur oppose et reaffecter la valeur a jour a -> grille[COORDONNEES_SUIVANTES]
 	-Return COORDONNEES_SUIVANTES
 
-===================================
+=================================== #Creusage parfait
 
 -Stocker '(0, 0)' dans -> CHEMIN_PARCOURU[]
 -Initialiser 'None' a -> 'DIRECTION_ACTUELLE
