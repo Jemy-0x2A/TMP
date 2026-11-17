@@ -1,4 +1,4 @@
-amazing
+
 
 22222222222222
 2000+++0000++2
@@ -6,25 +6,55 @@ amazing
 2+000+0000+0+2
 2+0++++++++++2
 22222222222222
+	
+			
+===================================
+NORTH, EAST, SOUTH, WEST = 1, 2, 4, 8
+ALL_WALLS = 15
 
-Taille(int)
-Creation de la grille:
-	grille[0...]
-	chaque rangee:
-		chaque colonne:
-			grille[rangee][colonne] = 2
+DIRECTIONS = {
+    "N": (0, -1, NORTH, SOUTH),
+    "E": (1, 0, EAST, WEST),
+    "S": (0, 1, SOUTH, NORTH),
+    "W": (-1, 0, WEST, EAST),
+}
+=================================== #Attributs
 
-case_suivante_est_valide()
-	#tout simplement si elle a deja ete visite
-creuser_les_murs()
-	#principes des bits et manip dictionnaire(direction, coord, mur, mur-opposite)
-	#+declaration decimal des murs
+-HAUTEUR (lignes)
+-LARGEUR (colonnes)
 
--Stocker '(0, 0)' dans -> CHEMIN_PARCOURU[] #DEPART
+-Initialise ALL_WALLS pour chaque colonne de chaque ligne dans -> GRILLE[]
+
+===================================
+
+case_suivante_est_valide(COORDONNEES, DIRECTION) -> TRUE/FALSE
+	-recuperer les coordonnees directionnelles dans DIRECTIONS{DIRECTION}
+	-affecter (COORDONNEES + la direction) a -> COORDONNEES_SUIVANTE
+	
+	-Si les COORDONNEES_SUIVANTES ne sortent pas de la grille
+	|	ET qu'elle ne fait pas partie des coordonnees42
+	|	ET la valeur a cette position est ALL_WALLS:
+	|		-Return TRUE
+	|
+	-Sinon:
+		-Return FALSE
+
+===================================
+	
+creuser_les_murs(COORDONNEES, DIRECTION) -> COORDONEES_SUIVANTES
+	-recuperer les coordonnees directionnelles et les deux murs voisins dans DIRECTIONS{DIRECTION}
+	-affecter (COORDONNEES + la direction) a -> COORDONNEES_SUIVANTES
+	-ouvrir le mur vise et reaffecter la valeur a jour a -> grille[COORDONNEES]
+	-ouvrir le mur oppose et reaffecter la valeur a jour a -> grille[COORDONNEES_SUIVANTES]
+	-Return COORDONNEES_SUIVANTES
+
+===================================
+
+-Stocker '(0, 0)' dans -> CHEMIN_PARCOURU[]
 -Initialiser 'None' a -> 'DIRECTION_ACTUELLE
--Stocker '(Nord, Sud, Est, Ouest)' dans -> TOUTES_LES_DIRECTIONS
+-Stocker chaque direction ("N", "E", "S", "W") dans -> TOUTES_LES_DIRECTIONS[]
 
-#CREUSAGE
+
 	Tant qu'il reste du CHEMIN_PARCOURU[]:
 		-affecter [] a -> DIRECTIONS_VALIDES[]
 		-affecter le dernier element du CHEMIN_PARCOURU[] a -> COORDONNEES_ACTUELLES
@@ -50,9 +80,6 @@ creuser_les_murs()
 			Sinon la case suivante n'est pas valide:
 				-reaffecter NONE a -> DIRECTION_ACTUELLE
 				-recommencer la boucle!!
-		
-		-//creuser_les_murs(COORDOONNEES_ACTUELLES, DIRECTION_ACTUELLE)\\
-		-reaffecter (DIRECTION_ACTUELLE + COORDOONNEES_ACTUELLES) a -> COORDOONEES_ACTUELLE 
-		-stocker les COORDOONNEES_ACTUELLES dans -> CHEMIN_PARCOURU[]
-		
-		#peut etre simplifier et solidifier les affecation reaffectation avec variable conditionnelles a part
+		 
+		-//creuser_les_murs(COORDOONNEES_ACTUELLES, DIRECTION_ACTUELLE)\\ et affecter a -> COORDONEES_SUIVANTES
+		-stocker les COORDONNEES_SUIVANTES dans -> CHEMIN_PARCOURU[]
