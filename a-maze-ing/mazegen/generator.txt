@@ -22,8 +22,13 @@ DIRECTIONS = {
 
 -HAUTEUR (lignes)
 -LARGEUR (colonnes)
-
 -Initialise ALL_WALLS pour chaque colonne de chaque ligne dans -> GRILLE[]
+-MODE
+
+-ENTREE
+-SORTIE
+
+-HEXADECIMAL
 
 =================================== #Fonction 1
 
