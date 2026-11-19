@@ -78,44 +78,82 @@ creuser_les_murs(COORDONNEES, DIRECTION) -> COORDONEES_SUIVANTES
 -Stocker chaque direction ("N", "E", "S", "W") dans -> TOUTES_LES_DIRECTIONS[]
 
 
-	Tant qu'il reste du CHEMIN_PARCOURU[]:
-		-affecter [] a -> DIRECTIONS_VALIDES[]
-		-affecter le dernier element du CHEMIN_PARCOURU[] a -> COORDONNEES_ACTUELLES
+Tant qu'il reste du CHEMIN_PARCOURU[]:
+	-affecter [] a -> DIRECTIONS_VALIDES[]
+	-affecter le dernier element du CHEMIN_PARCOURU[] a -> COORDONNEES_ACTUELLES
 
-		-Si il n'y a pas de DIRECTION_ACTUELLE:
-		|	
-		|	-Pour chaque "direction" de TOUTES_LES_DIRECTIONS:
-		|		-Si les //coords_suivantes_sont_valides( COORDOONEES_ACTUELLES, "direction" )\\:
-		|			-stocker la "direction" dans -> DIRECTIONS_VALIDES[]
-		|	
-		|	-Si il y a des DIRECTIONS_VALIDES[]:
-		|	|	
-		|	|	-reaffecter une direction aleatoirement a -> DIRECTION_ACTUELLE
-		|	|
-		|	-Sinon, il n'y a pas de DIRECTION_VALIDES[]:
-		|		-retirer le dernier element du CHEMIN_PARCOURU[]
-		|		-recommencer la boucle!!
-		|
-		-Sinon, il y a une DIRECTION_ACTUELLE:
-			Si les //coords_suivantes_sont_valides( COORDOONNEES_ACTUELLE, DIRECTION_ACTUELLE )\\ = False:
-				-reaffecter NONE a -> DIRECTION_ACTUELLE
-				-recommencer la boucle!!
-		 
-		-//creuser_les_murs(COORDOONNEES_ACTUELLES, DIRECTION_ACTUELLE)\\ et affecter a -> COORDONEES_SUIVANTES
-		-stocker les COORDONNEES_SUIVANTES dans -> CHEMIN_PARCOURU[]
-
-		-20% chance:
+	-Si il n'y a pas de DIRECTION_ACTUELLE:
+	|	
+	|	-Pour chaque "direction" de TOUTES_LES_DIRECTIONS:
+	|		-Si les //coords_suivantes_sont_valides( COORDOONEES_ACTUELLES, "direction" )\\:
+	|			-stocker la "direction" dans -> DIRECTIONS_VALIDES[]
+	|	
+	|	-Si il y a des DIRECTIONS_VALIDES[]:
+	|	|	
+	|	|	-reaffecter une direction aleatoirement a -> DIRECTION_ACTUELLE
+	|	|
+	|	-Sinon, il n'y a pas de DIRECTION_VALIDES[]:
+	|		-retirer le dernier element du CHEMIN_PARCOURU[]
+	|		-recommencer la boucle!!
+	|
+	-Sinon, il y a une DIRECTION_ACTUELLE:
+		Si les //coords_suivantes_sont_valides( COORDOONNEES_ACTUELLE, DIRECTION_ACTUELLE )\\ = False:
 			-reaffecter NONE a -> DIRECTION_ACTUELLE
+			-recommencer la boucle!!
+		 
+	-//creuser_les_murs(COORDOONNEES_ACTUELLES, DIRECTION_ACTUELLE)\\ et affecter a -> COORDONEES_SUIVANTES
+	-stocker les COORDONNEES_SUIVANTES dans -> CHEMIN_PARCOURU[]
+	
+	-20% chance:
+		-reaffecter NONE a -> DIRECTION_ACTUELLE
+
+-Return la grille[]
+
+=================================== #Fonction 3 - get_valids_next_cells()
+
+chercher_les_cellules_suivantes_valides(CELLULE_ACTUELLE, CAME_FROM{}) -> CELLULES_SUIVANTES[]
 
 =================================== #Resolution
 
+== #1 ==
 
+-stocker (entree) dans -> QUEUE[]
+-stocker (0, 0): None dans -> CAME_FROM{}
+-Si l'entree != a la sortie:
+	-initialiser False a -> SORTIE_TROUVEE
+-Sinon:
+	-initialiser True a -> SORTIE_TROUVEE
+
+-Tant qu'on n'a pas SORTIE_TROUVEE:
+	- Si la QUEUE[] est vide:
+		-Erreur("Impossible a resoudre")
+	-retirer  le premier element de la QUEUE[] et affecter a -> CELLULE_ACTUELLE
+
+	-//chercher_les_cellules_suivantes_valides(CELLULE_ACTUELLE, CAME_FROM{})\\ et affecter a -> CELLULES_SUIVANTES[]
+
+	-Pour chaque "cellule" des CELLULES_SUIVANTES[]:
+		-stocker "cellule" dans -> QUEUE[]
+		-stocker "cellule": CELLULE_ACTUELLE dans -> CAME_FROM{}
+		-Si la "cellule" est la sortie:
+			-affecter True a SORTIE_TROUVEE
+			-break
+
+== #2 ==
+
+-initialiser [] dans -> SOLUTION[]
+-initialiser la sortie a -> COORDS_ACTUELLE
+
+-Tant que COORDS_ACTUELLE != None:
+	-stocker COORDS_ACTUELLE dans -> SOLUTION[]
+	-reaffecter CAME_FROM[COORDS_ACTUELLE] a -> COORDS_ACTUELLE
+
+-inverser la SOLUTION[]
+-Return SOLUTION[]
 
 ===================================
 
 #-ecrire pensee machine la generation du logo
 #-pareil pour l'affichage
 #-penser a la verif des flux de donnees
-#-resolution
 #-hexa
 
