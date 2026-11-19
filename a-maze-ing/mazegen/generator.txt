@@ -48,7 +48,7 @@ pattern = [
 - trouver le point de depart dans la grille pour le centrer
 - enregistrer les coordonnees de la vraie grille pour chaque # dans un set()
 
-=================================== #Fonction 1 - next_coords_are_valids()
+=================================== #Fonction 1 - next_coords_are_valid()
 
 coords_suivantes_sont_valides(COORDONNEES, DIRECTION) -> TRUE/FALSE
 	-recuperer les coordonnees directionnelles dans DIRECTIONS{DIRECTION}
@@ -75,7 +75,6 @@ creuser_les_murs(COORDONNEES, DIRECTION) -> COORDONEES_SUIVANTES
 
 -Stocker '(0, 0)' dans -> CHEMIN_PARCOURU[]
 -Initialiser 'None' a -> 'DIRECTION_ACTUELLE
--Stocker chaque direction ("N", "E", "S", "W") dans -> TOUTES_LES_DIRECTIONS[]
 
 
 Tant qu'il reste du CHEMIN_PARCOURU[]:
@@ -84,7 +83,7 @@ Tant qu'il reste du CHEMIN_PARCOURU[]:
 
 	-Si il n'y a pas de DIRECTION_ACTUELLE:
 	|	
-	|	-Pour chaque "direction" de TOUTES_LES_DIRECTIONS:
+	|	-Pour chaque "direction" de DIRECTIONS.key():
 	|		-Si les //coords_suivantes_sont_valides( COORDOONEES_ACTUELLES, "direction" )\\:
 	|			-stocker la "direction" dans -> DIRECTIONS_VALIDES[]
 	|	
@@ -109,17 +108,26 @@ Tant qu'il reste du CHEMIN_PARCOURU[]:
 
 -Return la grille[]
 
-=================================== #Fonction 3 - get_valids_next_cells()
+=================================== #Fonction 3 - get_valid_next_cells()
 
 chercher_les_cellules_suivantes_valides(CELLULE_ACTUELLE, CAME_FROM{}) -> CELLULES_SUIVANTES[]
+	-initialiser [] a -> CELLULES_SUIVANTES[]
+
+	-Pour chaque "direction" et "mur_actuel" dans DIRECTIONS[]:
+		-Si le "mur_actuel" de la CELLULE_ACTUELLE est ouvert:
+			-affecter (CELLULE_ACTUELLE + "direction") a -> CELLULE_SUIVANTE
+			-Si CELLULE_SUIVANTE n'est pas dans CAME_FROM{}:
+				-ajouter CELLULE_SUIVANTE dans -> CELLULES_SUIVANTES[]
+	
+	-Return CELLULES_SUIVANTES[]	
 
 =================================== #Resolution
 
 == #1 ==
 
 -stocker (entree) dans -> QUEUE[]
--stocker (0, 0): None dans -> CAME_FROM{}
--Si l'entree != a la sortie:
+-stocker (entree): None dans -> CAME_FROM{}
+-Si l'entree != de la sortie:
 	-initialiser False a -> SORTIE_TROUVEE
 -Sinon:
 	-initialiser True a -> SORTIE_TROUVEE

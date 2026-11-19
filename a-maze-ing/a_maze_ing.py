@@ -13,10 +13,12 @@ def print_maze(
     entry_pos: tuple[int, int],
     exit_pos: tuple[int, int],
     logo_coords: set[tuple[int, int]] | None = None,
+    solution_coords: list[tuple[int, int]] | None = None,
 ) -> None:
     height = len(grid)
     width = len(grid[0])
     blocked = logo_coords or set()
+    path = set(solution_coords or [])
 
     # Mur tout en haut du labyrinthe
     print("+" + "---+" * width)
@@ -28,13 +30,15 @@ def print_maze(
         for x in range(width):
             cell = grid[y][x]
 
-            # Contenu de la case (Logo, Entrée, Sortie ou vide)
+            # Contenu de la case (Logo, Entrée, Sortie, Chemin ou vide)
             if (x, y) in blocked:
                 body = "\033[97m███\033[0m"
             elif (x, y) == entry_pos:
-                body = " E "
+                body = "\033[92m E \033[0m"
             elif (x, y) == exit_pos:
-                body = " S "
+                body = "\033[91m S \033[0m"
+            elif (x, y) in path:
+                body = "\033[93m • \033[0m"
             else:
                 body = "   "
 
@@ -58,11 +62,14 @@ if __name__ == "__main__":
         exit_pos=(18, 16),
         perfect=True,
     )
-    grid = maze.generate()
 
-    print("Grille brute (bitmasks) :")
-    for row in grid:
-        print(row)
-
-    print("\nRendu visuel :")
-    print_maze(grid, maze.entry_pos, maze.exit_pos, maze.logo_coords)
+    print("Rendu visuel :")
+    print_maze(
+        maze.grid,
+        maze.entry_pos,
+        maze.exit_pos,
+        maze.logo_coords,
+        maze.solution_coords,
+    )
+    print(f"\nLongueur : {len(maze.solution_path)} pas")
+    print(f"Chemin : {maze.solution_path}")

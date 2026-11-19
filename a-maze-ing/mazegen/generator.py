@@ -9,7 +9,14 @@ class MazeGenerator:
             "E": (1, 0, EAST, WEST),
             "S": (0, 1, SOUTH, NORTH),
             "W": (-1, 0, WEST, EAST),
-            }
+    }
+
+    ORIENTATION: dict[tuple[int, int], str] = {
+            (0, -1): "N",
+            (1, 0): "E",
+            (0, 1): "S",
+            (-1, 0): "W",
+    }
 
     def __init__(
             self,
@@ -18,15 +25,20 @@ class MazeGenerator:
             entry_pos: tuple[int, int],
             exit_pos: tuple[int, int],
             perfect: bool
-            ) -> None:
+    ) -> None:
 
         self.width = width
         self.height = height
         self.entry_pos = entry_pos
         self.exit_pos = exit_pos
         self.perfect = perfect
-        self.grid = [[self.ALL_WALLS] * self.width for _ in range(self.height)]
+
+        self.grid: list[list[int]] = []
         self.logo_coords: set[tuple[int, int]] = self._generate_logo()
+        self.solution_coords: list[tuple[int, int]] = []
+        self.solution_path: str = ""
+
+        self.generate()
 
 # - LOGO 42
 
@@ -59,11 +71,15 @@ class MazeGenerator:
 
         return coords_logo
 
-# - FONCTIONS TOOLS
+# - GENERATION HELPERS
 
-    def _next_coords_are_valids(self, coords: tuple[int, int], direction: str) -> bool:
+    def _next_coords_are_valid(
+            self,
+            coords: tuple[int, int],
+            direction: str
+    ) -> bool:
         x, y = coords
-        direction_x, direction_y = self.DIRECTIONS[direction][:2]
+        direction_x, direction_y, _, _ = self.DIRECTIONS[direction]
 
         next_x = x + direction_x
         next_y = y + direction_y
@@ -78,7 +94,11 @@ class MazeGenerator:
 
         return True
 
-    def _break_wall(self, coords: tuple[int, int], direction: str) -> tuple[int, int]:
+    def _break_wall(
+            self,
+            coords: tuple[int, int],
+            direction: str
+    ) -> tuple[int, int]:
         x, y = coords
         direction_x, direction_y, current_wall, opposite_wall = self.DIRECTIONS[direction]
 
@@ -91,12 +111,12 @@ class MazeGenerator:
         return (next_x, next_y)
 
 
-# - GENERATE
+# - GENERATION
 
     def generate(self) -> list[list[int]]:
+        self.grid = [[self.ALL_WALLS] * self.width for _ in range(self.height)]
         path_stack = [(0, 0)]
         actual_direction: str | None = None
-        all_directions = [direction for direction in self.DIRECTIONS.keys()]
 
         while path_stack:
             valids_directions: list[str] = []
@@ -105,18 +125,18 @@ class MazeGenerator:
             if not actual_direction:
                 valids_directions = [
                         direction
-                        for direction in all_directions
-                        if self._next_coords_are_valids(actual_coords, direction)
+                        for direction in self.DIRECTIONS.keys()
+                        if self._next_coords_are_valid(actual_coords, direction)
                         ]
 
                 if valids_directions:
-                   actual_direction =  random.choice(valids_directions)
+                    actual_direction =  random.choice(valids_directions)
                 else:
                     path_stack.pop()
                     continue
 
             else:
-                if not self._next_coords_are_valids(actual_coords, actual_direction):
+                if not self._next_coords_are_valid(actual_coords, actual_direction):
                     actual_direction = None
                     continue
 
@@ -126,4 +146,74 @@ class MazeGenerator:
             if random.random() < 0.6:
                 actual_direction = None
 
+        self._solve()
+        self.solution_path = self._path_to_directions(self.solution_coords)
         return self.grid
+
+# - SOLVING HELPER
+
+    def _get_valid_next_cells(
+        self,
+        current_cell: tuple[int, int],
+        came_from: dict[tuple[int, int], tuple[int, int] | None],
+    ) -> list[tuple[int, int]]:
+        x, y = current_cell
+        next_valid_cells: list[tuple[int, int]] = []
+
+        for direction_x, direction_y, wall_mask, _ in self.DIRECTIONS.values():
+            if not (self.grid[y][x] & wall_mask):
+                next_cell = (x + direction_x, y + direction_y)
+                if next_cell not in came_from:
+                    next_valid_cells.append(next_cell)
+
+        return next_valid_cells
+
+# - SOLVING
+
+
+    def _solve(self) -> None:
+        queue: list[tuple[int, int]] = [self.entry_pos]
+        came_from: dict[tuple[int, int], tuple[int, int] | None] = {
+            self.entry_pos: None
+        }
+
+        if self.entry_pos != self.exit_pos:
+            exit_found = False
+        else:
+            exit_found = True
+
+        while not exit_found:
+            if not queue:
+                raise ValueError("Maze has no valid path from entry to exit")
+
+            current_cell = queue.pop(0)
+            next_cells = self._get_valid_next_cells(current_cell, came_from)
+
+            for cell in next_cells:
+                queue.append(cell)
+                came_from[cell] = current_cell
+                if cell == self.exit_pos:
+                    exit_found = True
+                    break
+
+        solution: list[tuple[int, int]] = []
+        current_coords: tuple[int, int] | None = self.exit_pos
+
+        while current_coords is not None:
+            solution.append(current_coords)
+            current_coords = came_from[current_coords]
+
+        solution.reverse()
+        self.solution_coords = solution
+
+
+# OUTPUT-FILE : HEXA + PATH(N,S,E,W)
+
+    def _path_to_directions(self, solution_coords: list[tuple[int, int]]) -> str:
+        directions: list[str] = []
+
+        for (x1, y1), (x2, y2) in zip(solution_coords, solution_coords[1:]):
+            direction = (x2 - x1, y2 - y1)
+            directions.append(self.ORIENTATION[direction])
+
+        return "".join(directions)
