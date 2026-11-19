@@ -23,16 +23,32 @@ DIRECTIONS = {
 -HAUTEUR (lignes)
 -LARGEUR (colonnes)
 -Initialise ALL_WALLS pour chaque colonne de chaque ligne dans -> GRILLE[]
--MODE
+
 
 -ENTREE
 -SORTIE
 
 -HEXADECIMAL
+-MODE
+-LOGO 42
 
 #verification des parametres, seed?
 
-=================================== #Fonction 1
+=================================== #Logo 42
+
+-delimiter la zone d'affichage en carre
+pattern = [
+            "#.#.###",
+            "#.#...#",
+            "###.###",
+            "..#.#..",
+            "..#.###",
+        ]
+- limiter la taille de la grille a 4 cellule de marge sinon renvoyer un set() vide
+- trouver le point de depart dans la grille pour le centrer
+- enregistrer les coordonnees de la vraie grille pour chaque # dans un set()
+
+=================================== #Fonction 1 - next_coords_are_valids()
 
 coords_suivantes_sont_valides(COORDONNEES, DIRECTION) -> TRUE/FALSE
 	-recuperer les coordonnees directionnelles dans DIRECTIONS{DIRECTION}
@@ -40,14 +56,14 @@ coords_suivantes_sont_valides(COORDONNEES, DIRECTION) -> TRUE/FALSE
 	
 	-Si les COORDONNEES_SUIVANTES ne sortent pas de la grille
 	.	ET qu'elle ne font pas partie des coordonnees42
-	.	ET la valeur a cette position est ALL_WALLS:
+	.	ET que la valeur a cette position est ALL_WALLS:
 	|		-Return TRUE
 	|
 	-Sinon:
 		-Return FALSE
 
-=================================== #Fonction 2
-	
+=================================== #Fonction 2 - break_wall()
+
 creuser_les_murs(COORDONNEES, DIRECTION) -> COORDONEES_SUIVANTES
 	-recuperer les coordonnees directionnelles et les deux murs voisins dans DIRECTIONS{DIRECTION}
 	-affecter (COORDONNEES + la direction) a -> COORDONNEES_SUIVANTES
@@ -90,3 +106,16 @@ creuser_les_murs(COORDONNEES, DIRECTION) -> COORDONEES_SUIVANTES
 
 		-20% chance:
 			-reaffecter NONE a -> DIRECTION_ACTUELLE
+
+=================================== #Resolution
+
+
+
+===================================
+
+#-ecrire pensee machine la generation du logo
+#-pareil pour l'affichage
+#-penser a la verif des flux de donnees
+#-resolution
+#-hexa
+
