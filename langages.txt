@@ -1,0 +1,38 @@
+========== C ==========
+
+========== PYTHON ==========
+
+Variable
+Affichage
+typage
+boucles
+conditions
+structure de donnees
+
+instances
+Objet:
+	-attribut
+	-initialisation
+	-methode d'instance/ de classe/ statique
+	-encapsulation
+	-setter/ getter @property @variable.setter
+	-classe imbriquee
+	-heritage super() 
+	-polymorphisme
+	-classe abstraite
+	-verification isinstance()/pydantic
+
+entree utilisateurs
+	
+gestion d'erreur
+manipulation fichiers
+
+importation
+environnement viruel/ dependances 
+
+manipulation de fonctions:
+	fonction d'ordre superieur, typage Callable
+	reduce, partial
+	fonctions anonyme
+	@lru_cache, @singledispatch
+	creation de decorateur @wraps
