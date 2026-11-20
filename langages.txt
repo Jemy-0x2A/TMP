@@ -1,15 +1,25 @@
-========== C ==========
-
-========== PYTHON ==========
 
 Variable
-Affichage
-typage
-boucles
-conditions
-structure de donnees
+Typage
 
-instances
+Affichage
+Entree utilisateur
+
+Conditions
+Boucles
+
+Structures de donnees
+
+Manipulation fichiers
+Importation
+
+Manipulation des fonctions
+
+========== C ==========
+Allocation/Liberation de la memoire
+Manipulation d'adresses memoires
+
+========== PYTHON ==========
 Objet:
 	-attribut
 	-initialisation
@@ -22,15 +32,10 @@ Objet:
 	-classe abstraite
 	-verification isinstance()/pydantic
 
-entree utilisateurs
-	
-gestion d'erreur
-manipulation fichiers
+Gestion erreurs
+Environnement viruel 
 
-importation
-environnement viruel/ dependances 
-
-manipulation de fonctions:
+Manipulation des fonctions:
 	fonction d'ordre superieur, typage Callable
 	reduce, partial
 	fonctions anonyme
