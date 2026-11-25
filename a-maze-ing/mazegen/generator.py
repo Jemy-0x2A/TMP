@@ -36,7 +36,9 @@ class MazeGenerator:
         self.grid: list[list[int]] = []
         self.logo_coords: set[tuple[int, int]] = self._generate_logo()
         self.solution_coords: list[tuple[int, int]] = []
-        self.solution_path: str = ""
+
+        #self.solution_path: str = ""
+        #self.hex_grid: str = ""
 
         self.generate()
 
@@ -110,7 +112,6 @@ class MazeGenerator:
 
         return (next_x, next_y)
 
-
 # - GENERATION
 
     def generate(self) -> list[list[int]]:
@@ -146,8 +147,9 @@ class MazeGenerator:
             if random.random() < 0.6:
                 actual_direction = None
 
+        #self.hex_grid = self._grid_to_hex()
         self._solve()
-        self.solution_path = self._path_to_directions(self.solution_coords)
+        #self.solution_path = self._path_to_directions()
         return self.grid
 
 # - SOLVING HELPER
@@ -169,7 +171,6 @@ class MazeGenerator:
         return next_valid_cells
 
 # - SOLVING
-
 
     def _solve(self) -> None:
         queue: list[tuple[int, int]] = [self.entry_pos]
@@ -206,14 +207,40 @@ class MazeGenerator:
         solution.reverse()
         self.solution_coords = solution
 
+# - OUTPUT: HEXA + ENTRY/EXIT + PATH(N, S, E, W)
 
-# OUTPUT-FILE : HEXA + PATH(N,S,E,W)
+# HELPERS
 
-    def _path_to_directions(self, solution_coords: list[tuple[int, int]]) -> str:
+    def _grid_to_hex(self) -> str:
+        hex_grid: list[list[str]] = [
+            [format(cell, "X") for cell in row]
+            for row in self.grid
+        ]
+
+        hex_rows: list[str] = ["".join(row) for row in hex_grid]
+
+        return "\n".join(hex_rows)
+
+    def _coords_to_directions(self) -> str:
         directions: list[str] = []
 
-        for (x1, y1), (x2, y2) in zip(solution_coords, solution_coords[1:]):
+        for (x1, y1), (x2, y2) in zip(self.solution_coords, self.solution_coords[1:]):
             direction = (x2 - x1, y2 - y1)
             directions.append(self.ORIENTATION[direction])
 
         return "".join(directions)
+
+# FUNCTION
+
+    def format_output(self) -> str:
+        hex_grid = self._grid_to_hex()
+        entry_str = f"{self.entry_pos[0]},{self.entry_pos[1]}"
+        exit_str = f"{self.exit_pos[0]},{self.exit_pos[1]}"
+        solution_path = self._coords_to_directions()
+
+        return (
+            f"{hex_grid}\n\n"
+            f"{entry_str}\n"
+            f"{exit_str}\n"
+            f"{solution_path}\n"
+        )

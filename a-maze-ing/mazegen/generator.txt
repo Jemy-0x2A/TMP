@@ -163,5 +163,5 @@ chercher_les_cellules_suivantes_valides(CELLULE_ACTUELLE, CAME_FROM{}) -> CELLUL
 #-ecrire pensee machine la generation du logo
 #-pareil pour l'affichage
 #-penser a la verif des flux de donnees
-#-hexa
+#-seed
 

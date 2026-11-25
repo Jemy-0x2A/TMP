@@ -1,60 +1,15 @@
 #lecture du fichier de configuration et recuperation des parametre
 
-#boucle affichage et interaction 
 #-re/generer et ecrire la chaine hexa de svg dans le fichier sortie
 #-afficher/masquer chemin
 #-changer la couleur des murs
 #-quitter
 
 from mazegen.generator import MazeGenerator
-
-def print_maze(
-    grid: list[list[int]],
-    entry_pos: tuple[int, int],
-    exit_pos: tuple[int, int],
-    logo_coords: set[tuple[int, int]] | None = None,
-    solution_coords: list[tuple[int, int]] | None = None,
-) -> None:
-    height = len(grid)
-    width = len(grid[0])
-    blocked = logo_coords or set()
-    path = set(solution_coords or [])
-
-    # Mur tout en haut du labyrinthe
-    print("+" + "---+" * width)
-
-    for y in range(height):
-        row_cells = "|"
-        row_bottom = "+"
-
-        for x in range(width):
-            cell = grid[y][x]
-
-            # Contenu de la case (Logo, Entrée, Sortie, Chemin ou vide)
-            if (x, y) in blocked:
-                body = "\033[97m███\033[0m"
-            elif (x, y) == entry_pos:
-                body = "\033[92m E \033[0m"
-            elif (x, y) == exit_pos:
-                body = "\033[91m S \033[0m"
-            elif (x, y) in path:
-                body = "\033[93m • \033[0m"
-            else:
-                body = "   "
-
-            # Mur Est (bit 2)
-            east_wall = "|" if (cell & MazeGenerator.EAST) else " "
-            row_cells += body + east_wall
-
-            # Mur Sud (bit 4)
-            south_wall = "---" if (cell & MazeGenerator.SOUTH) else "   "
-            row_bottom += south_wall + "+"
-
-        print(row_cells)
-        print(row_bottom)
+from display import print_maze
 
 
-if __name__ == "__main__":
+def main() -> None:
     maze = MazeGenerator(
         width=21,
         height=19,
@@ -63,13 +18,39 @@ if __name__ == "__main__":
         perfect=True,
     )
 
-    print("Rendu visuel :")
-    print_maze(
-        maze.grid,
-        maze.entry_pos,
-        maze.exit_pos,
-        maze.logo_coords,
-        maze.solution_coords,
-    )
-    print(f"\nLongueur : {len(maze.solution_path)} pas")
-    print(f"Chemin : {maze.solution_path}")
+    show_path = False
+    colors = ["W", "C", "Y", "G", "M"]
+    color_index = 0
+
+    while True:
+        print_maze(
+            maze.grid,
+            maze.entry_pos,
+            maze.exit_pos,
+            maze.logo_coords,
+            maze.solution_coords if show_path else None,
+            colors[color_index]
+        )
+
+        print(
+                "\n=== A-Maze-ing ===\n"
+                "1. Re-generate a new maze\n"
+                "2. Show/Hide path from entry to exit\n"
+                "3. Rotate maze colors\n"
+                "4. Quit\n"
+              )
+        choice = input("Choice? (1-4): ")
+
+        if choice == "1":
+            maze.generate()
+        elif choice == "2":
+            show_path = not show_path
+        elif choice == "3":
+            color_index = (color_index + 1) % len(colors)
+        elif choice == "4":
+            break
+        else:
+            continue
+
+if __name__ == "__main__":
+    main()
