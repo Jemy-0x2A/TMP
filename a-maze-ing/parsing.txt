@@ -1,0 +1,88 @@
+-Initialiser les cles autorisees dans -> CLES_REQUISES(tuple: 
+			"LARGEUR", "HAUTEUR",
+			"ENTREE", "SORTIE",
+			"FICHIER_SORTIE",
+			"PARFAIT"
+			)
+
+- Creer la dataclass MazeConfig:
+	width: int
+    	height: int
+    	entry: tuple[int, int]
+    	exit: tuple[int, int]
+    	output_file: str
+    	perfect: bool
+
+==================== parse_dimensions(value: str, key: str) -> int
+
+la value devient un int sinon erreur !
+la value >= 0 sinon erreur !
+
+return nouvelle value
+
+==================== parse_coords(value: str, key: str, width: int, height: int) -> tuple[int, int]
+
+si il n'y a pas qu'une seule virgule alors erreur!
+on decoupe autour de la virgule, retire les espace autour des deux x,y et ils deviennent des int sinon erreur!
+si les coordonnees ne font pas partie de la grille erreur
+
+return (x, y)
+
+==================== parse_bool(value: str, key: str) -> bool:
+
+on met en minuscule la value
+si c'est bien true on return True
+si c'est bien fasle on return False
+sinon erreur!
+
+==================== parse_config(filepath: str) -> MazeConfig
+
+-Initialiser {} a -> STR_CONFIG{}
+
+-Ouverture du FICHIER:
+	-Pour chaque NUMERO_DE_LIGNE, LIGNE, dans le FICHIER:
+		-nettoyer le debut/fin de la LIGNE
+		-Si la ligne est vide ou commence par '#':
+			-continue!
+		-Si la ligne n'as pas qu'un seul '=':
+			-Raise erreur !
+		-decouper la ligne autour du '=' et affecter a -> CLE, VALEUR
+		-nettoyer le debut/fin de CLE, VALEUR
+		-Si la CLE n'est pas dans les CLES_REQUISES:
+			-Raise erreur !
+		-Si la CLE est deja dans STR_CONFIG{}:
+			-Raise erreur !
+
+		-Ajouter CLE:VALEUR dans -> STR_CONFIG{}
+
+
+-Initialiser [] dans -> CLES_MANQUANTES
+-Pour chaque 'cle' dans les CLES_REQUISES:
+	-Si la 'cle' n'est pas dans la STR_CONFIG{}:
+		-ajouter 'cle' dans -> CLES_MANQUANTES
+-Si il y a des CLES_MANQUANTES:
+	-Raise Erreur !
+	
+HAUTEUR = parse_dimensions(STR_CONFIG["HAUTEUR"], "HAUTEUR")
+LARGEUR = parse_dimensions(STR_CONFIG["LARGEUR"], "LARGEUR")
+
+ENTREE = parse_coords(STR_CONFIG["ENTREE"], "ENTREE", HAUTEUR, LARGEUR)
+SORTIE = parse_coords(STR_CONFIG["SORTIE"], "SORTIE", HAUTEUR, LARGEUR)
+-Si ENTREE == SORTIE:
+	-Raise erreur !
+	
+PARFAIT = parse_vool(STR_CONFIG["PARFAIT"], "PARFAIT")
+
+FICHIER_SORTIE = STR_CONFIG["FICHIER_SORTIE"]
+-Si le FICHIER_SORTIE ne fini pas par ".txt" ou il contient que ".txt" ou que "/.txt":
+	-Raise erreur !
+
+	
+-Return MazeConfig(
+        width=HAUTEUR,
+        height=LARGEUR,
+        entry=ENTREE,
+        exit=SORTIE,
+        output_file=FICHIER_SORTIE,
+        perfect=PARFAIT,
+    )

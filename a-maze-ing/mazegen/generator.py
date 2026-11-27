@@ -18,6 +18,7 @@ class MazeGenerator:
             (-1, 0): "W",
     }
 
+
     def __init__(
             self,
             width: int,
@@ -41,6 +42,7 @@ class MazeGenerator:
         #self.hex_grid: str = ""
 
         self.generate()
+
 
 # - LOGO 42
 
@@ -73,6 +75,7 @@ class MazeGenerator:
 
         return coords_logo
 
+
 # - GENERATION HELPERS
 
     def _next_coords_are_valid(
@@ -96,6 +99,7 @@ class MazeGenerator:
 
         return True
 
+
     def _break_wall(
             self,
             coords: tuple[int, int],
@@ -111,6 +115,7 @@ class MazeGenerator:
         self.grid[next_y][next_x] &= ~opposite_wall
 
         return (next_x, next_y)
+
 
 # - GENERATION
 
@@ -152,6 +157,7 @@ class MazeGenerator:
         #self.solution_path = self._path_to_directions()
         return self.grid
 
+
 # - SOLVING HELPER
 
     def _get_valid_next_cells(
@@ -169,6 +175,7 @@ class MazeGenerator:
                     next_valid_cells.append(next_cell)
 
         return next_valid_cells
+
 
 # - SOLVING
 
@@ -207,6 +214,7 @@ class MazeGenerator:
         solution.reverse()
         self.solution_coords = solution
 
+
 # - OUTPUT: HEXA + ENTRY/EXIT + PATH(N, S, E, W)
 
 # HELPERS
@@ -221,6 +229,7 @@ class MazeGenerator:
 
         return "\n".join(hex_rows)
 
+
     def _coords_to_directions(self) -> str:
         directions: list[str] = []
 
@@ -229,6 +238,7 @@ class MazeGenerator:
             directions.append(self.ORIENTATION[direction])
 
         return "".join(directions)
+
 
 # FUNCTION
 

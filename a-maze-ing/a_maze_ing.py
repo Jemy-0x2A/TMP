@@ -1,21 +1,28 @@
-#lecture du fichier de configuration et recuperation des parametre
 
-#-re/generer et ecrire la chaine hexa de svg dans le fichier sortie
-#-afficher/masquer chemin
-#-changer la couleur des murs
-#-quitter
-
+import sys
+from config_parser import parse_config
 from mazegen.generator import MazeGenerator
 from display import print_maze
 
 
 def main() -> None:
+
+    if len(sys.argv) != 2:
+        print("Usage: python3 a_maze_ing.py <config_file>", file=sys.stderr)
+        sys.exit(1)
+
+    try:
+        config = parse_config(sys.argv[1])
+    except (OSError, ValueError) as err:
+        print(f"Error: {err}", file=sys.stderr)
+        sys.exit(1)
+
     maze = MazeGenerator(
-        width=21,
-        height=19,
-        entry_pos=(2, 2),
-        exit_pos=(18, 16),
-        perfect=True,
+        width=config.width,
+        height=config.height,
+        entry_pos=config.entry_coords,
+        exit_pos=config.exit_coords,
+        perfect=config.perfect,
     )
 
     show_path = False
@@ -31,7 +38,10 @@ def main() -> None:
             maze.solution_coords if show_path else None,
             colors[color_index]
         )
-
+        
+        # Test temporaire pour vérifier que tout est bien chargé
+        print(f"Loaded config: {config}")
+        
         print(
                 "\n=== A-Maze-ing ===\n"
                 "1. Re-generate a new maze\n"

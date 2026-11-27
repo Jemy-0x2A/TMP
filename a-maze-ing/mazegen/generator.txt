@@ -165,3 +165,13 @@ chercher_les_cellules_suivantes_valides(CELLULE_ACTUELLE, CAME_FROM{}) -> CELLUL
 #-penser a la verif des flux de donnees
 #-seed
 
+-tester erreur config.txt
+-verifier sys.exit()
+- simplifier au max
+
+-fichier de sortie
+-seed
+-verif donnees dans l objet
+- mode imparfait
+
+-transportabilite du package objet
