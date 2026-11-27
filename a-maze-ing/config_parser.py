@@ -32,6 +32,7 @@ def parse_dimensions(value: str, key: str) -> int:
 
     if number <= 0:
         raise ValueError(f"{key}: must be greater than 0 (got {number})")
+
     return number
 
 

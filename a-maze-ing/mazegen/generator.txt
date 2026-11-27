@@ -166,7 +166,6 @@ chercher_les_cellules_suivantes_valides(CELLULE_ACTUELLE, CAME_FROM{}) -> CELLUL
 #-seed
 
 -tester erreur config.txt
--verifier sys.exit()
 - simplifier au max
 
 -fichier de sortie
